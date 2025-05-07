@@ -5,7 +5,7 @@ import SignInPage from "@/pages/SignIn.tsx";
 import ForgotPasswordPage from "@/pages/ForgotPassword.tsx";
 import ProfilePage from "@/pages/user/Profile.tsx";
 import NotFoundPage from "@/pages/404.tsx";
-import MoviePage from "@/pages/movie/Movie.tsx";
+import MoviePage from "@/pages/movie/id/Movie.tsx";
 
 export default function RouterIndex() {
     return (

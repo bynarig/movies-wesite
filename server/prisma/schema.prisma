@@ -29,6 +29,10 @@ model user {
 }
 
 enum user_role {
+  OWNER
   ADMIN
+  SUPPORT
+  MODERATOR
   USER
+  UNVERIFIED
 }
