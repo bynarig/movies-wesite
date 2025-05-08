@@ -30,6 +30,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@root/*": ["../*"],
       "@templates/*": ["src/templates/*"]
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */

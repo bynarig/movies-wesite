@@ -1,7 +1,17 @@
 import Navbar from "@/components/Navbar.tsx";
 import SignUpForm from "@/components/SignUpForm.tsx";
+import {useUserStore} from "@/store/userStore.ts";
+import {useNavigate} from "react-router";
+import {useEffect} from "react";
 
 export default function SignUpPage() {
+    const isSignedUp = useUserStore((state) => state.isSignedUp)
+    let navigate = useNavigate();
+    useEffect(() => {
+        if (isSignedUp) {
+            navigate('/')
+        }
+    }, [isSignedUp]);
     return (
         <>
             <Navbar/>

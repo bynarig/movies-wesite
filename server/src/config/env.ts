@@ -13,7 +13,7 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(32),
   REFRESH_TOKEN_SECRET: z.string().min(32),
   JWT_EXPIRY: z.any(),
-  REFRESH_TOKEN_EXPIRY: z.string().regex(/^\d+[smhd]$/),
+  REFRESH_TOKEN_EXPIRY: z.any(),
   FRONTEND_URL: z.string().url(),
   SMTP_HOST: process.env.NODE_ENV === "development" ? z.string().optional() : z.string(),
   SMTP_PORT: process.env.NODE_ENV === "development" ? z.string().transform(Number).optional() : z.string().transform(Number),

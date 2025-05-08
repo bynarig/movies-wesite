@@ -26,6 +26,7 @@ import {AuthService} from "@/services/auth.service.ts";
 
 
 export default function Navbar() {
+    const userStore = useUserStore();
 
     const isSignedUp = useUserStore((state) => state.isSignedUp)
 
@@ -74,7 +75,9 @@ export default function Navbar() {
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
                                         <Avatar>
-                                            <AvatarImage src="https://github.com/shadcn.png"/>
+                                            <AvatarImage src={
+                                                userStore.avatar ||
+                                                "https://github.com/shadcn.png"}/>
                                             <AvatarFallback>CN</AvatarFallback>
                                         </Avatar>
                                     </DropdownMenuTrigger>

@@ -9,30 +9,169 @@ datasource db {
   url      = env("POSTGRES_DATABASE_URL")
 }
 
-model user {
-  id                       String    @id @default(uuid()) @map("id")
-  name                     String    @map("name") @db.VarChar(99)
-  email                    String    @unique @map("email") @db.VarChar(99)
-  password                 String?   @map("password") @db.VarChar(100)
-  refreshToken             String?   @map("refresh_token") @db.Text
-  role                     user_role @default(USER) @map("role")
+model User {
+  // Basics
+  id        String   @id @default(uuid())
+  name      String
+  username  String   @unique
+  email     String   @unique
+  avatar    String?
+  password  String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relationships
+  likes     UserLikes[]
+  bookmarks UserBookmarks[]
+  watched   UserWatched[]
+  comments  Comment[]
+
+  // Role & Auth
+  role          UserRole       @default(USER)
+  authProviders AuthProvider[] @default([CREDENTIALS]) @map("auth_providers")
+
+  // Security
+  refreshToken             String?   @map("refresh_token")
   emailVerified            DateTime? @map("email_verified")
-  emailVerificationToken   String?   @map("email_verification_token") @db.VarChar(100)
+  emailVerificationToken   String?   @map("email_verification_token")
   emailVerificationExpires DateTime? @map("email_verification_expires")
-  passwordResetToken       String?   @map("password_reset_token") @db.VarChar(100)
+  passwordResetToken       String?   @map("password_reset_token")
   passwordResetExpires     DateTime? @map("password_reset_expires")
-  image                    String?   @map("image")
-  createdAt                DateTime  @default(now()) @map("created_at")
-  updatedAt                DateTime  @updatedAt @map("updated_at")
+  lastLogin                DateTime? @default(now()) @map("last_login")
 
   @@map("users")
 }
 
-enum user_role {
+enum UserRole {
   OWNER
   ADMIN
   SUPPORT
   MODERATOR
   USER
   UNVERIFIED
+}
+
+enum AuthProvider {
+  CREDENTIALS
+  GOOGLE
+  APPLE
+}
+
+model Movie {
+  id          String    @id @default(uuid())
+  title       String
+  poster      String?
+  trailer     String?
+  description String?
+  runtime     Int?
+  country     String?
+  language    String?
+  imdb        String?
+  rating      Float?
+  releasedAt  DateTime? @map("released_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relationships
+  actors    MovieActor[]
+  directors MovieDirector[]
+  comments  Comment[]
+  likes     UserLikes[]
+  bookmarks UserBookmarks[]
+  watched   UserWatched[]
+
+  @@map("movies")
+}
+
+// Junction Tables
+model UserLikes {
+  userId    String   @map("user_id")
+  movieId   String   @map("movie_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user  User  @relation(fields: [userId], references: [id])
+  movie Movie @relation(fields: [movieId], references: [id])
+
+  @@id([userId, movieId])
+  @@map("user_likes")
+}
+
+model UserBookmarks {
+  userId    String   @map("user_id")
+  movieId   String   @map("movie_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user  User  @relation(fields: [userId], references: [id])
+  movie Movie @relation(fields: [movieId], references: [id])
+
+  @@id([userId, movieId])
+  @@map("user_bookmarks")
+}
+
+model UserWatched {
+  userId    String   @map("user_id")
+  movieId   String   @map("movie_id")
+  watchedAt DateTime @default(now()) @map("watched_at")
+
+  user  User  @relation(fields: [userId], references: [id])
+  movie Movie @relation(fields: [movieId], references: [id])
+
+  @@id([userId, movieId])
+  @@map("user_watched")
+}
+
+model Actor {
+  id     String       @id @default(uuid())
+  name   String
+  bio    String?
+  movies MovieActor[]
+
+  @@map("actors")
+}
+
+model Director {
+  id     String          @id @default(uuid())
+  name   String
+  bio    String?
+  movies MovieDirector[]
+
+  @@map("directors")
+}
+
+model MovieActor {
+  movieId String @map("movie_id")
+  actorId String @map("actor_id")
+
+  movie Movie @relation(fields: [movieId], references: [id])
+  actor Actor @relation(fields: [actorId], references: [id])
+
+  @@id([movieId, actorId])
+  @@map("movie_actors")
+}
+
+model MovieDirector {
+  movieId    String @map("movie_id")
+  directorId String @map("director_id")
+
+  movie    Movie    @relation(fields: [movieId], references: [id])
+  director Director @relation(fields: [directorId], references: [id])
+
+  @@id([movieId, directorId])
+  @@map("movie_directors")
+}
+
+model Comment {
+  id        String    @id @default(uuid())
+  content   String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  userId  String @map("user_id")
+  movieId String @map("movie_id")
+
+  user  User  @relation(fields: [userId], references: [id])
+  movie Movie @relation(fields: [movieId], references: [id])
+
+  @@map("comments")
 }

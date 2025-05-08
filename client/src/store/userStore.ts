@@ -1,13 +1,20 @@
 import {create} from 'zustand'
 import {createJSONStorage, persist} from "zustand/middleware";
+import type {UserType} from "@root/types/userTypes.ts";
+import type {AuthProviders, UserRole} from "@root/types/userTypes.ts";
 
-interface UserState {
+interface UserState extends UserType{
     isSignedUp: boolean
-    id: string | null
-    name: string | null
-    email: string | null
-    role: 'guest' | 'user' | 'admin'
-    login: (name: string, role: 'user' | 'admin', id: string, email: string) => void
+    lastLoginLocal: Date | undefined
+    login: (userData: {
+        name: string
+        username: string
+        role: UserRole
+        id: string
+        email: string
+        avatar?: string | undefined
+        authProviders?: AuthProviders[] | undefined
+    }) => void
     logout: () => void
 }
 
@@ -15,16 +22,40 @@ export const useUserStore = create<UserState>()(
     persist(
         (set) => ({
             isSignedUp: false,
-            name: null,
-            role: "guest",
-            id: null,
-            email: null,
-            login: (name, role, id, email) => set({isSignedUp: true, name, role, id, email}),
-            logout: () => set({isSignedUp: false, name: null, role: "guest", id: null, email: null}),
+            lastLoginLocal: undefined,
+            name: undefined,
+            username: undefined,
+            avatar: undefined,
+            authProviders: ["CREDENTIALS"],
+            role: "GUEST",
+            id: undefined,
+            email: undefined,
+            login: ({name,username, role, id, email, avatar = undefined, authProviders = ["CREDENTIALS"] }) =>
+                set({
+                    isSignedUp: true,
+                    lastLoginLocal: new Date(),
+                    name,
+                    username,
+                    role,
+                    id,
+                    email,
+                    avatar,
+                    authProviders
+                }),
+            logout: () => set({
+                isSignedUp: false,
+                name: undefined,
+                username: undefined,
+                role: "GUEST",
+                id: undefined,
+                email: undefined,
+                avatar: undefined,
+                authProviders: undefined
+            }),
         }),
         {
-            name: 'user-storage', // name of the item in the storage (must be unique)
-            storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+            name: 'user-storage',
+            storage: createJSONStorage(() => sessionStorage),
         },
     ),
 )

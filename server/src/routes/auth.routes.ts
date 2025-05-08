@@ -96,6 +96,9 @@ router.post("/signup", validateRequest(signupSchema), authController.signup);
  */
 router.post("/login", validateRequest(loginSchema), authController.login);
 
+router.post("/google", authController.googleAuth);
+
+
 /**
  * @swagger
  * /auth/refresh:

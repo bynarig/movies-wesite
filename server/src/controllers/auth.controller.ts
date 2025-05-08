@@ -21,6 +21,12 @@ export class AuthController extends BaseController {
       return await this.authService.login(email, password);
     });
   };
+  googleAuth = (req: Request, res: Response, next: NextFunction): void => {
+    this.handleRequest(req, res, next, async () => {
+      const { token } = req.body;
+      return await this.authService.googleAuth(token);
+    });
+  };
 
   logout = (req: Request, res: Response, next: NextFunction): void => {
     this.handleRequest(req, res, next, async () => {

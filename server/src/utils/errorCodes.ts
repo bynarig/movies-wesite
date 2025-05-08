@@ -4,6 +4,7 @@ export enum ErrorCode {
   INVALID_CREDENTIALS = "ERR_1002",
   TOKEN_EXPIRED = "ERR_1003",
   INVALID_TOKEN = "ERR_1004",
+  AUTHENTICATION_FAILED = "ERR_1005",
 
   // Authorization Errors (2xxx)
   FORBIDDEN = "ERR_2001",

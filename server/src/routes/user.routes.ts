@@ -109,6 +109,14 @@ router.get(
   userController.getUser
 );
 
+router.get(
+  "/profile/:id",
+  cache({ duration: 10 }), // Cache for 10 sec
+  userController.getUserProfileData
+);
+
+
+
 /**
  * @swagger
  * /users:
@@ -203,6 +211,8 @@ router.patch(
   validateRequest(updateUserSchema),
   userController.update
 );
+
+
 
 /**
  * @swagger

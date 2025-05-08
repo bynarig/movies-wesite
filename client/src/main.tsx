@@ -7,15 +7,18 @@ import {BrowserRouter} from "react-router";
 import RouterIndex from "@/router/Index.tsx";
 import {ThemeProvider} from "@/components/ThemeProvider.tsx";
 import {Toaster} from "sonner";
+import {AuthProvider} from "@/providers/auth.provider.tsx";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-            <BrowserRouter>
-                <RouterIndex/>
-        <Toaster />
+        <AuthProvider>
+            <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+                <BrowserRouter>
+                    <RouterIndex/>
+                    <Toaster/>
 
-            </BrowserRouter>
-        </ThemeProvider>
+                </BrowserRouter>
+            </ThemeProvider>
+        </AuthProvider>
     </React.StrictMode>,
 )

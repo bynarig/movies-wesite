@@ -16,9 +16,15 @@ import {NavLink, useNavigate} from "react-router";
 import {AuthService} from "@/services/auth.service.ts";
 import {useState} from "react";
 import GoogleIcon from "@/assets/googleIcon.tsx";
-import AppleIcon from "@/assets/appleIcon.tsx";
+import {useGoogleLogin} from "@react-oauth/google";
 
 export default function SignUpForm() {
+    const googleLogin = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            await AuthService.googleAuth(tokenResponse.access_token);
+        },
+        onError: (errorResponse) => console.log(errorResponse),
+    });
     const navigate = useNavigate();
     const [error, setError] = useState<string | null>(null)
     const form = useForm<z.infer<typeof signupSchema>>({
@@ -81,8 +87,7 @@ export default function SignUpForm() {
                     </div>
                 </form>
             </Form>
-            <Button className="mt-[10px] w-full">Sign up with Google <GoogleIcon/></Button>
-            <Button className="mt-[10px] w-full"><AppleIcon/>Sign up with Apple </Button>
+            <Button onClick={() => googleLogin()} className="mt-[10px] w-full" >Sign up with Google <GoogleIcon/></Button>
         </div>
     )
 }

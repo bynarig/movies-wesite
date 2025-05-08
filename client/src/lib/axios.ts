@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {API_URL} from '@/consts.ts';
 import {useUnifiedStore} from '@/store/unifiedStore.ts';
+import {AuthService} from "@/services/auth.service.ts";
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
@@ -24,12 +25,27 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-// Response interceptor for handling errors
 axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        // Handle errors globally here
-        console.error('API Error:', error);
+    response => response,
+    async (error) => {
+        const originalRequest = error.config;
+
+        // If error is 401 (unauthorized) and it's not a refresh request
+        if (error.response.status === 401 && !originalRequest._retry && originalRequest.url !== '/auth/refresh') {
+            originalRequest._retry = true;
+
+            try {
+                const newAccessToken = await AuthService.refresh();
+
+                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+                return axiosInstance(originalRequest);
+            } catch (refreshError) {
+                await AuthService.logout();
+                return Promise.reject(refreshError);
+            }
+        }
+
         return Promise.reject(error);
     }
 );

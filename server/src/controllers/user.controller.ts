@@ -41,4 +41,12 @@ export class UserController extends BaseController {
       return null;
     });
   };
+  getUserProfileData = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    await this.handleRequest(req, res, next, async () => {
+      if (!req.user || req.user.userId !== req.params.id) {
+        throw new AppError("Not authorized to access this profile", 403);
+      }
+      return await this.userService.getUserById(req.params.id);
+    });
+  };
 }
