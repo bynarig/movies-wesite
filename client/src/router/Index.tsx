@@ -6,6 +6,10 @@ import ForgotPasswordPage from "@/pages/ForgotPassword.tsx";
 import ProfilePage from "@/pages/user/Profile.tsx";
 import NotFoundPage from "@/pages/404.tsx";
 import MoviePage from "@/pages/movie/id/Movie.tsx";
+import ActorsPage from "@/pages/actors/Actors.tsx";
+import DirectorsPage from "@/pages/directors/Directors.tsx";
+import ProfilePublicPage from "@/pages/profile/Profile.tsx";
+import SeriesPage from "@/pages/series/id/Series.tsx";
 
 export default function RouterIndex() {
     return (
@@ -16,8 +20,12 @@ export default function RouterIndex() {
             <Route path="forgotpassword" element={<ForgotPasswordPage/>}/>
             <Route path="user">
                 <Route path="profile" element={<ProfilePage/>}/>
+                <Route path=":userId" element={<ProfilePublicPage/>}/>
             </Route>
             <Route path="movie/:movieId" element={<MoviePage/>}></Route>
+            <Route path="series/:seriesId" element={<SeriesPage/>}></Route>
+            <Route path="actors" element={<ActorsPage/>}></Route>
+            <Route path="directors" element={<DirectorsPage/>}></Route>
             <Route path=":other" element={<NotFoundPage/>}/>
         </Routes>
     )
