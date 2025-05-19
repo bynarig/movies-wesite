@@ -8,7 +8,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
-import {loginSchema} from "@/validators/auth.validator.ts";
+import { signupSchema} from "@/validators/auth.validator.ts";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
@@ -26,18 +26,18 @@ export default function SignInForm() {
         onError: (errorResponse) => console.log(errorResponse),
     });
     const navigate = useNavigate();
-    const [error, setError] = useState<string | null>(null)
-    const form = useForm<z.infer<typeof loginSchema>>({
-        resolver: zodResolver(loginSchema),
+     const [error, setError] = useState<string | null>(null)
+    const form = useForm<z.infer<typeof signupSchema>>({
+        resolver: zodResolver(signupSchema),
         defaultValues: {
             password: "",
             email: "",
         },
     })
 
-    async function onSubmit(data: z.infer<typeof loginSchema>) {
+    async function onSubmit(data: z.infer<typeof signupSchema>) {
         const res = await AuthService.signin(data)
-        if (res?.status === 200) {
+        if (res.status === 200) {
             navigate("/")
         } else {
             setError(res.data.message)
@@ -86,7 +86,6 @@ export default function SignInForm() {
                 </form>
             </Form>
             <Button onClick={() => googleLogin()} className="mt-[10px] w-full">Sign in with Google <GoogleIcon/></Button>
-            {/*<Button className="mt-[10px] w-full"><AppleIcon/>Sign in with Apple </Button>*/}
         </div>
     )
 }

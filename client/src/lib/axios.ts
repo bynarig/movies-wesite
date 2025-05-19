@@ -31,7 +31,7 @@ axiosInstance.interceptors.response.use(
         const originalRequest = error.config;
 
         // If error is 401 (unauthorized) and it's not a refresh request
-        if (error.response.status === 401 && !originalRequest._retry && originalRequest.url !== '/auth/refresh') {
+        if (error.response.status === 401 && !originalRequest._retry && originalRequest.url !== '/auth/refresh' && originalRequest.url !== '/auth/login') {
             originalRequest._retry = true;
 
             try {

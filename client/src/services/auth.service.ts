@@ -12,7 +12,6 @@ export class AuthService {
     static async signup(data: { email: string, password: string }) {
         try {
             const res = await axiosInstance.post('/auth/signup', data);
-            console.log('First log:', res);
             const {user, accessToken, refreshToken} = res.data.data;
 
             useUserStore.getState().login({
@@ -25,10 +24,8 @@ export class AuthService {
             useUnifiedStore.getState().setAccessToken(accessToken);
             useUnifiedStore.getState().setRefreshToken(refreshToken);
 
-             console.log('Second log:', res)
             return res;
         } catch (error: any) {
-             console.error('Signup error:', error);
             return error.response;
         }
     }
@@ -36,7 +33,6 @@ export class AuthService {
     static async signin(data: { email: string, password: string }) {
         try {
             const res = await axiosInstance.post('/auth/login', data);
-
             const {user, accessToken, refreshToken} = res.data.data;
 
             useUserStore.getState().login({
@@ -51,7 +47,7 @@ export class AuthService {
 
             return res;
         } catch (error: any) {
-            throw error;
+            return error.response;
         }
     }
 
