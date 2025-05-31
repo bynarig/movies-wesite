@@ -48,7 +48,7 @@ export default function ProfilePage() {
 
     return (
         <>
-            <Navbar/>
+            
             <div
                 className="container mx-auto py-6 px-4 md:py-10 mt-5 xl:mt-[15vh] ">
                 <div className="max-w-5xl mx-auto">

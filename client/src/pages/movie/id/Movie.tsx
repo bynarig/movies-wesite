@@ -133,7 +133,7 @@ export default function MoviePage() {
 
     return (
         <div className="min-h-screen bg-background">
-            <Navbar/>
+            
             
             {/* Hero Section with Video Player */}
             <div className="relative">

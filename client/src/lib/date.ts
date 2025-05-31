@@ -50,3 +50,14 @@ export function toRelativeDate(date: string | number | Date) {
 
   return formatDistanceToNow(dateObj, { addSuffix: true });
 }
+
+
+export function getYear(date: string | number | Date| undefined) {
+  if (!date) {
+    return "undefined"
+  }
+  const dateObj = new Date(date);
+
+
+  return dateObj.getFullYear();
+}

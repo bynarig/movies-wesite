@@ -32,86 +32,89 @@ export default function Navbar() {
 
     return (
         <>
-            <div className='flex items-center justify-center'>
-                <div className='flex flex-row justify-around items-center w-full min-h-[50px] lg:min-h-0 md:mb-[10px]'>
-                    <NavigationMenu>
-                        <NavigationMenuList className="space-x-16">
-                            <NavigationMenuItem>
-                                <NavLink to="/" end>
-                                    Main
-                                </NavLink>
-                            </NavigationMenuItem>
-                            <div className="hidden md:flex space-x-16">
+            <header
+                className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+                <div className='flex items-center justify-center'>
+                    <div
+                        className='flex flex-row justify-around items-center w-full min-h-[50px] lg:min-h-0 md:mb-[10px]'>
+                        <NavigationMenu>
+                            <NavigationMenuList className="space-x-16">
                                 <NavigationMenuItem>
-                                    <NavLink to="/movies" end>
-                                        Movies
+                                    <NavLink to="/" end>
+                                        Main
                                     </NavLink>
                                 </NavigationMenuItem>
-                                <NavigationMenuItem>
-                                    <NavLink to="/series" end>
-                                        Series
-                                    </NavLink>
-                                </NavigationMenuItem>
-                                <NavigationMenuItem>
-                                    <NavLink to="/imdb" end>
-                                        Imdb Recomendations
-                                    </NavLink>
-                                </NavigationMenuItem>
-                                <NavigationMenuItem>
-                                    <NavLink to="/community" end>
-                                        Community Recomendations
-                                    </NavLink>
-                                </NavigationMenuItem>
-                            </div>
+                                <div className="hidden md:flex space-x-16">
+                                    <NavigationMenuItem>
+                                        <NavLink to="/movies" end>
+                                            Movies
+                                        </NavLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavLink to="/series" end>
+                                            Series
+                                        </NavLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavLink to="/imdb" end>
+                                            Imdb Recomendations
+                                        </NavLink>
+                                    </NavigationMenuItem>
+                                    <NavigationMenuItem>
+                                        <NavLink to="/community" end>
+                                            Community Recomendations
+                                        </NavLink>
+                                    </NavigationMenuItem>
+                                </div>
 
 
-                        </NavigationMenuList>
-                    </NavigationMenu>
-                    <div className="flex space-x-2">
+                            </NavigationMenuList>
+                        </NavigationMenu>
+                        <div className="flex space-x-2">
 
-                        {isSignedUp ?
-                            <>
+                            {isSignedUp ?
+                                <>
 
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Avatar>
-                                            <AvatarImage src={
-                                                userStore.avatar ||
-                                                "https://github.com/shadcn.png"}/>
-                                            <AvatarFallback>CN</AvatarFallback>
-                                        </Avatar>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="w-auto">
-                                        <DropdownMenuGroup>
-                                            <NavLink to="/user/profile">
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Avatar>
+                                                <AvatarImage src={
+                                                    userStore.avatar ||
+                                                    "https://github.com/shadcn.png"}/>
+                                                <AvatarFallback>CN</AvatarFallback>
+                                            </Avatar>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent className="w-auto">
+                                            <DropdownMenuGroup>
+                                                <NavLink to="/user/profile">
+                                                    <DropdownMenuItem>
+                                                        Profile
+                                                    </DropdownMenuItem>
+                                                </NavLink>
                                                 <DropdownMenuItem>
-                                                    Profile
+                                                    <span>Billing</span>
                                                 </DropdownMenuItem>
-                                            </NavLink>
-                                            <DropdownMenuItem>
-                                                <span>Billing</span>
-                                            </DropdownMenuItem>
-                                            <Button onClick={() => AuthService.logout()}
-                                                    variant="destructive">LogOut</Button>
+                                                <Button onClick={() => AuthService.logout()}
+                                                        variant="destructive">LogOut</Button>
 
-                                        </DropdownMenuGroup>
+                                            </DropdownMenuGroup>
 
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
 
-                            </>
+                                </>
 
-                            :
-                            <><Button><NavLink to="/signin" end>SignIn</NavLink></Button></>
-                        }
-                        <ModeToggle/>
+                                :
+                                <><Button><NavLink to="/signin" end>SignIn</NavLink></Button></>
+                            }
+                            <ModeToggle/>
 
+                        </div>
                     </div>
+
                 </div>
 
-            </div>
-            <Separator/>
-
+            </header>
         </>
     )
 }

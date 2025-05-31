@@ -14,7 +14,7 @@ export default function SignUpPage() {
     }, [isSignedUp]);
     return (
         <>
-            <Navbar/>
+            
             <div className="flex items-center justify-center h-[calc(100vh-64px)]">
                 <SignUpForm/>
             </div>

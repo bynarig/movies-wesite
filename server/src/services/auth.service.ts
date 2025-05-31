@@ -46,7 +46,6 @@ export class AuthService {
     }
 
     async signup(email: string, password: string) {
-        console.log("Signup: ", email, password, "")
 
         const existingUser = await prisma.user.findUnique({where: {email}});
         if (existingUser) {
@@ -56,11 +55,12 @@ export class AuthService {
         const verificationToken = this.generateVerificationToken();
         const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
         const name = `user-${randomUUID()}`;
+        const username = name.split("-")[0]+"-"+name.split("-")[1];
         let user = await prisma.user.create({
             data: {
                 email,
                 name,
-                username: name,
+                username,
                 password: hashedPassword,
                 emailVerificationToken: verificationToken,
                 emailVerificationExpires: verificationExpires,
